@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { React, useState } from "react"
 
 function App() {
 
@@ -10,6 +10,13 @@ function App() {
 
 
   const updateCalc = value => {
+    if (value === "Enter") {
+      calculate()
+      return;
+    } else if (value === "Backspace") {
+      deleteLast()
+      return;
+    }
     if (
       (ops.includes(value) && calc === "") ||
       (ops.includes(value) && ops.includes(calc.slice(-1)))
@@ -25,6 +32,7 @@ function App() {
     }
   }
 
+
   const createDigits = () => {
     const digits = []
 
@@ -32,7 +40,7 @@ function App() {
        digits.push(
         <input type="button" 
         onClick={() => updateCalc(i.toString())} key={i}
-        onKeyPress={() => updateCalc(i.toString())} 
+        
         value={i} />
           
       )
@@ -59,30 +67,36 @@ function App() {
 
   }
 
+  // const deleteLast = () => {
+    
+  // }
+
+
   return (
     <div className="App">
       <div className="calculator">
         <div className="display">
           {result ? <span>({result})</span> : ""} 
           &nbsp;
-          { calc || "0"}
+          <input value={ calc || "0"} onKeyDown={(e) => updateCalc(e.key)}/>
           </div>
-
+        <div className="operators">  
+          <input type="button" onClick={() => setCalc("")} value="CLR" />
+          <input type="button" onClick={deleteLast} value="DEL" />
+        </div>   
         <div className="operators">
           <input type="button" onClick={() => updateCalc("/")} value="/" />
           <input type="button" onClick={() => updateCalc("*")} value="*" />
           <input type="button" onClick={() => updateCalc("+")} value="+" />
           <input type="button" onClick={() => updateCalc("-")} value="-" />
-
-          <input type="button" onClick={deleteLast} value="DEL" />
-        </div>
+        </div>   
 
         <div className="digits">
           { createDigits() }
-          <input type="button" onClick={() => updateCalc("0")} value="0" />
           <input type="button" onClick={() => updateCalc(".")} value="." />
+          <input type="button" onClick={() => updateCalc("0")} value="0" />
 
-          <input type="button" onClick={calculate} value="=" />
+          <input type="button" id="enter" onClick={calculate} value="=" />
         </div>
       </div>
     </div>
