@@ -10,11 +10,14 @@ function App() {
 
 
   const updateCalc = value => {
+    const validVals = ['1','2','3','4','5','6','7','8','9','0','.','/','*','-','+',]
     if (value === "Enter") {
       calculate()
       return;
     } else if (value === "Backspace") {
       deleteLast()
+      return;
+    } else if (!validVals.includes(value)) {
       return;
     }
     if (
@@ -77,7 +80,7 @@ function App() {
       <div className="calculator">
         <div className="display">
           {result ? <span>({result})</span> : ""} 
-          &nbsp;
+          <br/>
           <input value={ calc || "0"} onKeyDown={(e) => updateCalc(e.key)}/>
           </div>
         <div className="operators">  
